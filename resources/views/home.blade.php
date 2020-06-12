@@ -15,6 +15,7 @@
                     @endif
 
                     You are logged in!
+                    <p>{{ Auth::user()->email }}</p>
                 </div>
             </div>
         </div>
