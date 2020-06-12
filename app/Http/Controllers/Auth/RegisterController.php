@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Biodata;
-
+ 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\File;
 
 class RegisterController extends Controller
@@ -55,44 +53,14 @@ class RegisterController extends Controller
         return view('auth.register', compact('biodata'));
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
-
     public function register(Request $request)
     {
  
         $validator = Validator::make($request->all(), 
         [
-            'email' => 'required|string|email|max:191|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'nama' => 'required|string|max:100',
+            'nama' => 'required|string|max:255',
             'nisn' => 'required|string|max:45',
             'tempat_lahir' => 'required|string|max:45',
             'tanggal_lahir' => 'required',
@@ -102,13 +70,12 @@ class RegisterController extends Controller
             'no_ijazah' => 'required|string|max:45',
             'foto' => 'mimes:pdf,jpeg,png,jpg|max:2048',
             'berkas' => 'mimes:pdf,jpeg,png,jpg|max:2048',
- 
         ],
  
         $messages = 
         [
             'email.required' => 'E-Mail tidak boleh kosong !',
-            'password.required' => 'Password tidak boleh kosong',
+            'password.required' => 'Password tidak boleh kosong!',
             'nama.required' => 'Nama tidak boleh kosong!',
             'nisn.required' => 'NISN tidak boleh kosong!',
             'tempat_lahir.required' => 'Tempat lahir tidak boleh kosong!',
@@ -143,7 +110,7 @@ class RegisterController extends Controller
         $biodata->nis = Input::get('nisn');
         $biodata->tempat_lahir = Input::get('tempat_lahir');
         $biodata->tanggal_lahir = Input::get('tanggal_lahir');
-        $biodata->telp = Input::get('telp');
+        $biodata->telp = Input::get('no_telp');
         $biodata->alamat = Input::get('alamat');
         $biodata->nem = Input::get('un_average');
         $biodata->no_ijazah = Input::get('no_ijazah');

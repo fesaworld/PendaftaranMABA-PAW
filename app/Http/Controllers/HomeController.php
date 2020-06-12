@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\User;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $level = Auth::user()->level;
+        switch ($level) {
+            case '0':
+                return redirect()->action('AdminController@index');
+                break;
+            case '1':
+                return redirect()->action('PendaftarController@index');
+                break;   
+                default:
+                echo "Pendaftaran MABA UMY!";
+                break;
+        }   
     }
 }

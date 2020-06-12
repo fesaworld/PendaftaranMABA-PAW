@@ -67,7 +67,7 @@
                         </div>
  
                         <div class="form-group row">
-                            <label for="nis" class="col-md-4 col-form-label text-md-right">{{ __('NISN') }}</label>
+                            <label for="nisn" class="col-md-4 col-form-label text-md-right">{{ __('NISN') }}</label>
  
                             <div class="col-md-4">
                                 <input id="nisn" type="text" class="form-control{{ $errors->has('nisn') ? ' is-invalid' : '' }}" name="nisn" value="{{ old('nisn') }}" required autofocus>
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="no_telp" class="col-md-4 col-form-label text-md-right">{{ __('No.Telp/Handphone') }}</label>
+                            <label for="no_telp" class="col-md-4 col-form-label text-md-right">{{ __('No.Telpon') }}</label>
  
                             <div class="col-md-4">
                                 <input id="no_telp" type="text" class="form-control{{ $errors->has('no_telp') ? ' is-invalid' : '' }}" name="no_telp" value="{{ old('no_telp') }}" required autofocus>
