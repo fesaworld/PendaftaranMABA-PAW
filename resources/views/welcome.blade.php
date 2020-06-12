@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Pendaftaran MABA UMY
                 </div>
 
                 <div class="links">
