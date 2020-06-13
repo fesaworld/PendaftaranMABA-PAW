@@ -6,8 +6,13 @@
         <div class="col-md-8">
 
             @if (session('status'))
+<<<<<<< HEAD
             <div class="alert alert-success">
             {{ session('status')}}
+=======
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+>>>>>>> Fesa - Rebuild
             </div>
             @endif
 

@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/daftar', 'Auth\RegisterController@register')->name('daftar');
 
 // ROUTES ADMIN
 Route::group(['middleware' => 'check-permission:admin'], function () {

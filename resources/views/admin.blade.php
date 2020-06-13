@@ -18,7 +18,7 @@
                           <th scope="col">NISN</th>
                           <th scope="col">NEM</th>
                           <th scope="col">No. Ijazah</th>
-                          <th scope="col">FOTO</th>
+                          <th scope="col">Foto</th>
                           <th scope="col">Berkas Ijazah</th>
                           <th scope="col">Status Pembayaran</th>
                           <th scope="col">Total Pembayaran</th>
