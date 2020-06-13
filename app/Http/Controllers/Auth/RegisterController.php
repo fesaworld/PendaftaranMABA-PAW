@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Biodata;
+ 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class RegisterController extends Controller
 {
@@ -40,32 +46,15 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    protected function validator(array $data)
+    public function showRegistrationForm()
     {
-<<<<<<< HEAD
-        return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-=======
         $biodata = Biodata::all();
  
         return view('auth.register');
->>>>>>> Fesa - Rebuild
     }
 
-    protected function create(array $data)
+    public function register(Request $request)
     {
-<<<<<<< HEAD
-        //Table Users
-        User::create([
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'level' => '1',
-        ]);
-
-        return redirect('/login') ->with ('status', 'Register Berhasil!. Silahkan Login..');
-=======
         $validator = Validator::make($request->all(), 
         [
             'email' => 'required|string|email|max:255|unique:users',
@@ -145,6 +134,5 @@ class RegisterController extends Controller
         // $biodata->save();
      
         return redirect('/login')->with('status', 'Registrasi Anda telah berhasil!. Silakan login dengan menggunakan email dan password Anda.');
->>>>>>> Fesa - Rebuild
     }
 }
