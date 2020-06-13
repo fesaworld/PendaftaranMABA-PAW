@@ -25,12 +25,11 @@ class CreateBiodatasTable extends Migration
             $table->string('no_ijazah', 45);    
             $table->text('foto')->nullable();
             $table->text('berkas')->nullable();
-            $table->string('status', 20);  
-            $table->string('total_pembayaran', 10);  
-            $table->string('no_test', 10);  
-            $table->string('lokasi', 30);  
+            $table->string('status', 20)->nullable();
+            $table->string('total_pembayaran', 10)->nullable();
+            $table->string('no_test', 10)->nullable();
+            $table->string('lokasi', 30)->nullable();
             $table->timestamps();
- 
             $table->integer('user_id')->unsigned();   
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

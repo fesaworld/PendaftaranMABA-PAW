@@ -55,7 +55,6 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
- 
         $validator = Validator::make($request->all(), 
         [
             'email' => 'required|string|email|max:255|unique:users',
@@ -92,9 +91,9 @@ class RegisterController extends Controller
  
         if($validator->fails())
         {
-        return back()->withErrors($validator)->withInput();  
+            return back()->withErrors($validator)->withInput();  
         }
- 
+       
         //Table Users
         $user = new User;
         $user->email = Input::get('email');
@@ -107,34 +106,33 @@ class RegisterController extends Controller
         $biodata = new Biodata;
         $biodata->user_id = $user_id;
         $biodata->nama = Input::get('nama');
-        $biodata->nis = Input::get('nisn');
+        $biodata->nisn = Input::get('nisn');
         $biodata->tempat_lahir = Input::get('tempat_lahir');
         $biodata->tanggal_lahir = Input::get('tanggal_lahir');
-        $biodata->telp = Input::get('no_telp');
+        $biodata->no_telp = Input::get('no_telp');
         $biodata->alamat = Input::get('alamat');
-        $biodata->nem = Input::get('un_average');
+        $biodata->un_average = Input::get('un_average');
         $biodata->no_ijazah = Input::get('no_ijazah');
         if($file = $request->hasFile('foto')) 
         {
             $namaFile = $user->id;
-            $file = $request->file('foto') ;
-            $fileName = $namaFile.'_'.$file->getClientOriginalName() ;
-            $destinationPath = public_path().'/images/' ;
+            $file = $request->file('foto');
+            $fileName = $namaFile.'_'.$file->getClientOriginalName();
+            $destinationPath = public_path().'/images/';
             $file->move($destinationPath,$fileName);
-            $biodata->url_foto = $fileName ;
+            $biodata->url_foto = $fileName;
         }
         if($file = $request->hasFile('berkas')) 
         {
             $namaFile = $user->id;
-            $file = $request->file('berkas') ;
-            $fileName = $namaFile.'_'.$file->getClientOriginalName() ;
-            $destinationPath = public_path().'/berkas/' ;
+            $file = $request->file('berkas');
+            $fileName = $namaFile.'_'.$file->getClientOriginalName();
+            $destinationPath = public_path().'/berkas/';
             $file->move($destinationPath,$fileName);
-            $biodata->url_foto = $fileName ;
+            $biodata->url_foto = $fileName;
         }
         $biodata->save();
      
- 
         return redirect()->back()->with('Success', 'Registrasi Anda telah berhasil!. Silakan login dengan menggunakan email dan password Anda.');
     }
 }
