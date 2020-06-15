@@ -2,13 +2,13 @@
 
 namespace Illuminate\Database\Eloquent;
 
-use LogicException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Contracts\Queue\QueueableCollection;
+use Illuminate\Contracts\Queue\QueueableEntity;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Str;
+use LogicException;
 
 class Collection extends BaseCollection implements QueueableCollection
 {
@@ -17,7 +17,7 @@ class Collection extends BaseCollection implements QueueableCollection
      *
      * @param  mixed  $key
      * @param  mixed  $default
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return \Illuminate\Database\Eloquent\Model|static|null
      */
     public function find($key, $default = null)
     {
@@ -87,9 +87,11 @@ class Collection extends BaseCollection implements QueueableCollection
         );
 
         $models->each(function ($model) use ($attributes) {
-            $this->find($model->getKey())->forceFill(
-                Arr::only($model->getAttributes(), $attributes)
-            )->syncOriginalAttributes($attributes);
+            $this->where($this->first()->getKeyName(), $model->getKey())
+                ->each
+                ->forceFill(Arr::only($model->getAttributes(), $attributes))
+                ->each
+                ->syncOriginalAttributes($attributes);
         });
 
         return $this;
@@ -190,14 +192,22 @@ class Collection extends BaseCollection implements QueueableCollection
     }
 
     /**
-     * Add an item to the collection.
+     * Load a set of relationship counts onto the mixed relationship collection.
      *
-     * @param  mixed  $item
+     * @param  string  $relation
+     * @param  array  $relations
      * @return $this
      */
-    public function add($item)
+    public function loadMorphCount($relation, $relations)
     {
-        $this->items[] = $item;
+        $this->pluck($relation)
+            ->filter()
+            ->groupBy(function ($model) {
+                return get_class($model);
+            })
+            ->each(function ($models, $className) use ($relations) {
+                static::make($models)->loadCount($relations[$className] ?? []);
+            });
 
         return $this;
     }
@@ -328,6 +338,10 @@ class Collection extends BaseCollection implements QueueableCollection
     {
         $intersect = new static;
 
+        if (empty($items)) {
+            return $intersect;
+        }
+
         $dictionary = $this->getDictionary($items);
 
         foreach ($this->items as $item) {
@@ -393,7 +407,7 @@ class Collection extends BaseCollection implements QueueableCollection
      */
     public function makeHidden($attributes)
     {
-        return $this->each->addHidden($attributes);
+        return $this->each->makeHidden($attributes);
     }
 
     /**
@@ -405,6 +419,17 @@ class Collection extends BaseCollection implements QueueableCollection
     public function makeVisible($attributes)
     {
         return $this->each->makeVisible($attributes);
+    }
+
+    /**
+     * Append an attribute across the entire collection.
+     *
+     * @param  array|string  $attributes
+     * @return $this
+     */
+    public function append($attributes)
+    {
+        return $this->each->append($attributes);
     }
 
     /**
@@ -433,7 +458,7 @@ class Collection extends BaseCollection implements QueueableCollection
     /**
      * Get an array with the values of a given key.
      *
-     * @param  string  $value
+     * @param  string|array  $value
      * @param  string|null  $key
      * @return \Illuminate\Support\Collection
      */
@@ -455,7 +480,7 @@ class Collection extends BaseCollection implements QueueableCollection
     /**
      * Zip the collection together with one or more arrays.
      *
-     * @param  mixed ...$items
+     * @param  mixed  ...$items
      * @return \Illuminate\Support\Collection
      */
     public function zip($items)
@@ -498,12 +523,25 @@ class Collection extends BaseCollection implements QueueableCollection
      * Pad collection to the specified length with a value.
      *
      * @param  int  $size
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return \Illuminate\Support\Collection
      */
     public function pad($size, $value)
     {
         return $this->toBase()->pad($size, $value);
+    }
+
+    /**
+     * Get the comparison function to detect duplicates.
+     *
+     * @param  bool  $strict
+     * @return \Closure
+     */
+    protected function duplicateComparator($strict)
+    {
+        return function ($a, $b) {
+            return $a->is($b);
+        };
     }
 
     /**
@@ -553,7 +591,19 @@ class Collection extends BaseCollection implements QueueableCollection
      */
     public function getQueueableRelations()
     {
-        return $this->isNotEmpty() ? $this->first()->getQueueableRelations() : [];
+        if ($this->isEmpty()) {
+            return [];
+        }
+
+        $relations = $this->map->getQueueableRelations()->all();
+
+        if (count($relations) === 0 || $relations === [[]]) {
+            return [];
+        } elseif (count($relations) === 1) {
+            return reset($relations);
+        } else {
+            return array_intersect(...$relations);
+        }
     }
 
     /**

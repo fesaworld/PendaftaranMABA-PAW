@@ -1,4 +1,5 @@
 <?php
+ 
   function checkPermission($permissions){
     $userAccess = getMyPermission(auth()->user()->level);
     foreach ($permissions as $key => $value) {
@@ -8,6 +9,7 @@
     }
     return false;
   }
+ 
  
   function getMyPermission($id)
   {
@@ -23,4 +25,5 @@
         break;
     }
   }
+ 
 ?>

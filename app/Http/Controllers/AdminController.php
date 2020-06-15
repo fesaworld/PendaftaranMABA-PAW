@@ -22,10 +22,8 @@ class AdminController extends Controller
     public function index()
     {
         $title = 'Dashboard Admin';
-        $users = User::where('level', 1)->get();
+        $users = User::where('hak_akses', 'user')->get();
  
-        return view('admin', compact('title', 'users'));
-    }
- 
- 
+        return view('/admin/dashboard', compact('title', 'users'));
+    }    
 }
