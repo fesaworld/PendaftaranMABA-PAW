@@ -14,10 +14,10 @@
   function getMyPermission($id)
   {
     switch ($id) {
-      case 0:
+      case 1:
         return 'admin';
         break;
-      case 1:
+      case 2:
         return 'pendaftar';
         break;
       default:

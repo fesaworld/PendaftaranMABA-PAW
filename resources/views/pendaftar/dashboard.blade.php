@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Dahboard')
+@section('title', 'Dashboard')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

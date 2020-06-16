@@ -24,11 +24,12 @@ class PendaftarController extends Controller
     public function index()
     {
         $title = 'Dashboard Pendaftar';
-        $id =  Auth::user()->id;
+        $users = User::where('hak_akses', 'pendaftar')->get();
+        $id =  Auth::users()->id;
         $user = DB::table('users')->where('id', $id)->first();
-        $biodata = DB::table('biodatas')->where('user_id', $id)->first();
+        $biodata = DB::table('biodatsa')->where('user_id', $id)->first();
  
-        return view('/pendaftar/dashboard', compact('title', 'user', 'biodata'));
+        return view('/pendaftar/dashboard', compact('title', 'users', 'biodatas'));
     }
 
     /**
