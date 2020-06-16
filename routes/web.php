@@ -41,7 +41,7 @@ Route::group(['middleware' => 'check-permission:admin'], function () {
 // ROUTES PENDAFTAR
 Route::group(['middleware' => 'check-permission:pendaftar'], function () {
     Route::group(['prefix' => 'pendaftar'], function () {
-	Route::get('dashboard', 'PendaftarController@index')->name('pendaftar.dashboard');
+	Route::get('/dashboard', 'PendaftarController@index')->name('pendaftar.dashboard');
  
 	});
 });

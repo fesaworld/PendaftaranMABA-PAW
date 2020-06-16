@@ -16,7 +16,7 @@ class VerifikasiController extends Controller
     public function index()
     {
         $title = 'Verifikasi Pendaftar';
-        $users = User::where('hak_akses', 'user')->get();
+        $users = User::where('hak_akses', 'pendaftar')->get();
  
         return view('/admin/verifikasi', compact('title', 'users'));
     }

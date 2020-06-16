@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function index()
     {
         $title = 'Dashboard Admin';
-        $users = User::where('hak_akses', 'user')->get();
+        $users = User::where('hak_akses', 'pendaftar')->get();
  
         return view('/admin/dashboard', compact('title', 'users'));
     }    
