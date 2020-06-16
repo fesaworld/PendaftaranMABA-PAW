@@ -28,7 +28,7 @@
                         <?php $i++ ;?>
                         <tr>
                           <th scope="row">{{ $i }}</th>
-                            <td>{{ $user->Biodata->nama }}</td>
+                            <td>{{ $user->biodata->nama }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->Biodata->nisn }}</td>
                             <td>{{ $user->Biodata->un_average }}</td>
