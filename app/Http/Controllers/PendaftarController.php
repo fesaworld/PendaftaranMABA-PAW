@@ -52,12 +52,7 @@ class PendaftarController extends Controller
         
     }
 
-    protected function create(array $data)
-    {
-       
-    }
-
-    public function register(Request $request)
+    protected function create(Request $request)
     {
         $validator = Validator::make($request->all(), 
         [

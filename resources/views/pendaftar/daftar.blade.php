@@ -17,7 +17,7 @@
  
                 <div class="card-body">
  
-                    <form method="POST" action="/pendaftar/dashboard">
+                    <form method="POST" action="{{ route('create') }}" enctype="multipart/form-data">
                         @csrf
  
                         <div class="form-group row">

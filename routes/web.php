@@ -43,7 +43,6 @@ Route::group(['middleware' => 'check-permission:pendaftar'], function () {
     Route::group(['prefix' => 'pendaftar'], function () {
     Route::get('dashboard', 'PendaftarController@index')->name('pendaftar.dashboard');
     Route::get('daftar', 'PendaftarController@edit')->name('pendaftar.daftar');
-    Route::post('regis', 'Auth\PendaftarController@register')->name('regis');
     Route::get('status', 'PendaftarController@show')->name('pendaftar.status');
     
 	});
